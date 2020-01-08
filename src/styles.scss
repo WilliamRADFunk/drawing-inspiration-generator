@@ -1,0 +1,39 @@
+$enable-gradients: true;
+$enable-shadows: true;
+@import '~bootstrap/scss/bootstrap.scss';
+
+// needed so font-awesome knows where fonts are loaded from
+$fa-font-path: '~font-awesome/fonts';
+@import '~font-awesome/scss/font-awesome';
+
+html {
+  width: 100%;
+}
+
+body {
+    background-color: black;
+    color: white;
+    margin: auto;
+    overflow-x: hidden;
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff;
+    width: 98%;
+}
+
+.dig-tooltip {
+    & .tooltip-inner {
+        background-color: aliceblue;
+        border: 5px solid #B19CD9;
+        box-shadow: 2px 2px 2px 2px #333333;
+        color: #000000;
+        min-width: 200px;
+    }
+    & .arrow::before {
+        border-bottom-color: #B19CD9;
+    }
+}
+
+.transparent-modal .modal-content {
+    background-color: #FFFFFF00;
+    border: none;
+    box-shadow: none;
+}
