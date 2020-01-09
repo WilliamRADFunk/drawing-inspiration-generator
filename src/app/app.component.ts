@@ -8,6 +8,7 @@ import { WordPickerService } from './services/word-picker.service';
 })
 export class AppComponent implements OnInit {
   public readonly title: string = 'drawing-inspiration-generator';
+  public definitionOfDay: string;
   public wordOfDay: string;
 
   constructor(private readonly wordPicker: WordPickerService) {}
@@ -16,6 +17,10 @@ export class AppComponent implements OnInit {
     this.wordPicker.currentWord.subscribe(word => {
         this.wordOfDay = word;
     });
+    this.wordPicker.currentDefinition.subscribe(definition => {
+        this.definitionOfDay = definition;
+    });
+    this.wordPicker.getWord();
   }
 
   public getNewWord(): void {
