@@ -1,16 +1,47 @@
 <div class="w-100 h-100">
     <div class="h1 text-center my-4">Drawing Inspiration Generator</div>
     <div class="row text-white">
-        <div class="col-12 col-md-2 offset-md-2">
+        <div class="col-12 col-md-3 offset-md-2 mb-3">
             <div class="bg-info border border-white rounded word-box">
                 <div class="h4 text-center"><u>Word of the day</u></div>
-                <div class="h5 pl-2">{{ wordOfDay | titlecase }}</div>
+                <div class="h5 pl-2">
+                    <span class="word" (click)="getImagesByWord(wordOfDay)">{{ wordOfDay | titlecase }}</span>
+                </div>
             </div>
         </div>
-        <div class="col-12 col-md-5 offset-md-1">
+        <div class="col-12 col-md-5 mb-3">
             <div class="bg-info border border-white rounded word-box">
                 <div class="h4 text-center"><u>Definition</u></div>
-                <div class="h5 pl-2">{{ definitionOfDay }}</div>
+                <div class="h5 pl-1">
+                    <span
+                      *ngFor="let word of getWordsArray(definitionOfDay);"
+                      (click)="getImagesByWord(word)"
+                      class="pl-1 word">{{ word }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row text-white">
+        <div class="col-12 col-md-8 offset-md-2">
+            <div class="bg-info border border-white rounded word-box">
+                <div class="h4 text-center">
+                    <u>Related Images</u>
+                    <ng-container *ngIf="imageWord">
+                        ( {{ imageWord }} )
+                    </ng-container>
+                </div>
+                <ng-container *ngIf="images.length; else noImages">
+                    <div *ngFor="let image of images" class="d-inline-block pl-2">
+                        <img [src]="image.previewURL" width="auto" height="auto" alt="image.tags"/>
+                    </div>
+                </ng-container>
+                <ng-template #noImages>
+                    <div class="h5 pl-2">
+                        No images came back for this word.
+                        <br/>
+                        Try clicking on a word in the definition for images related to that.
+                    </div>
+                </ng-template>
             </div>
         </div>
     </div>

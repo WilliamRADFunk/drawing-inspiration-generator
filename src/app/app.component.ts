@@ -3,6 +3,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { WordPickerService } from './services/word-picker.service';
 import { Subscription } from 'rxjs';
+import { PixabayImageHit } from './models/pixabay-image-hit';
 
 @Component({
   selector: 'app-root',
@@ -13,13 +14,15 @@ export class AppComponent implements OnDestroy, OnInit {
     private readonly subs: Subscription[] = [];
     public readonly title: string = 'drawing-inspiration-generator';
     public definitionOfDay: string;
+    public images: PixabayImageHit[] = [];
+    public imageWord: string;
     public wordOfDay: string;
 
     constructor(
         private readonly route: ActivatedRoute,
         private readonly router: Router,
         private readonly wordPicker: WordPickerService) {}
-    
+
     ngOnDestroy() {
         this.subs.forEach(s => s && s.unsubscribe());
         this.subs.length = 0;
@@ -34,13 +37,13 @@ export class AppComponent implements OnDestroy, OnInit {
                     console.log('queriedDate', queriedDate);
                     queriedDateAsDate = Date.parse(queriedDate);
 
-                    if (isNaN(queriedDateAsDate) == false) {
-                        this.wordPicker.getWord(new Date(queriedDateAsDate).setUTCHours(0,0,0,0));
+                    if (isNaN(queriedDateAsDate) === false) {
+                        this.wordPicker.getWord(new Date(queriedDateAsDate).setUTCHours(0, 0, 0, 0));
                     } else {
-                        this.updateParams(new Date().setUTCHours(0,0,0,0));
+                        this.updateParams(new Date().setUTCHours(0, 0, 0, 0));
                     }
                 } else {
-                    this.updateParams(new Date().setUTCHours(0,0,0,0));
+                    this.updateParams(new Date().setUTCHours(0, 0, 0, 0));
                 }
             }),
             this.wordPicker.currentWord.subscribe(word => {
@@ -48,6 +51,12 @@ export class AppComponent implements OnDestroy, OnInit {
             }),
             this.wordPicker.currentDefinition.subscribe(definition => {
                 this.definitionOfDay = definition;
+            }),
+            this.wordPicker.currentImages.subscribe(images => {
+                this.images = images;
+            }),
+            this.wordPicker.currentImageWord.subscribe(word => {
+                this.imageWord = word;
             })
         );
     }
@@ -59,13 +68,29 @@ export class AppComponent implements OnDestroy, OnInit {
         const day = dateObj.getUTCDate();
         this.router.navigate([], {
             queryParams: {
-                date: `${year}-${month.toString().length === 1 ? `0${month.toString()}` : month}-${day.toString().length === 1 ? `0${day.toString()}` : day}`
+                date: `${
+                  year}-${
+                  month.toString().length === 1 ? `0${month.toString()}` : month}-${
+                  day.toString().length === 1 ? `0${day.toString()}` : day}`
             },
             queryParamsHandling: 'merge'
         });
     }
 
+    public getImagesByWord(word: string): void {
+        this.wordPicker.getImages(word);
+    }
+
     public getNewWord(): void {
         this.wordPicker.getWord(Math.random());
     }
-}
+
+    public getWordsArray(sentence: string): string[] {
+        const words = sentence.split(' ').filter(word => !!word);
+        if (words.length) {
+            const word = words[0];
+            words[0] = word.charAt(0).toUpperCase() + word.slice(1);
+        }
+        return words;
+    }
+ }

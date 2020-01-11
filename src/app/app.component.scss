@@ -1,3 +1,8 @@
 .word-box {
     min-height: 200px;
 }
+
+.word:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
