@@ -12,11 +12,14 @@ html {
 
 body {
     background-color: black;
-    color: white;
     margin: auto;
     overflow-x: hidden;
-    text-shadow: 0 0 3px #fff, 0 0 7px #fff, 0 0 10px #fff;
     width: 98%;
+}
+
+.h1 {
+    color: white;
+    text-shadow: 0 0 3px #fff, 0 0 7px #fff, 0 0 10px #fff;
 }
 
 .dig-tooltip {

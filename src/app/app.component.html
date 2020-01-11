@@ -1,5 +1,17 @@
 <div class="w-100 h-100">
     <div class="h1 text-center my-4">Drawing Inspiration Generator</div>
-    <div class="h3 text-center">Word of the day: {{ wordOfDay }}</div>
-    <div class="h3 text-center">Definition: {{ definitionOfDay }}</div>
+    <div class="row text-white">
+        <div class="col-12 col-md-2 offset-md-2">
+            <div class="bg-info border border-white rounded word-box">
+                <div class="h4 text-center"><u>Word of the day</u></div>
+                <div class="h5 pl-2">{{ wordOfDay | titlecase }}</div>
+            </div>
+        </div>
+        <div class="col-12 col-md-5 offset-md-1">
+            <div class="bg-info border border-white rounded word-box">
+                <div class="h4 text-center"><u>Definition</u></div>
+                <div class="h5 pl-2">{{ definitionOfDay }}</div>
+            </div>
+        </div>
+    </div>
 </div>
