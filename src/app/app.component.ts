@@ -1,9 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
-import { WordPickerService } from './services/word-picker.service';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
+
+import { WordPickerService } from './services/word-picker.service';
 import { PixabayImageHit } from './models/pixabay-image-hit';
+import { PixabayImageSearchResponse } from './models/pixabay-image-search-response';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +15,16 @@ import { PixabayImageHit } from './models/pixabay-image-hit';
 })
 export class AppComponent implements OnDestroy, OnInit {
     private readonly subs: Subscription[] = [];
-    public readonly title: string = 'drawing-inspiration-generator';
+    @ViewChild('content', { static: true }) content: any;
     public definitionOfDay: string;
+    public imageInFocus: PixabayImageHit;
     public images: PixabayImageHit[] = [];
     public imageWord: string;
+    public readonly title: string = 'drawing-inspiration-generator';
     public wordOfDay: string;
 
     constructor(
+        private readonly modalService: NgbModal,
         private readonly route: ActivatedRoute,
         private readonly router: Router,
         private readonly wordPicker: WordPickerService) {}
@@ -78,7 +84,7 @@ export class AppComponent implements OnDestroy, OnInit {
     }
 
     public getImagesByWord(word: string): void {
-        this.wordPicker.getImages(word);
+        this.wordPicker.getImages(word.replace(/\;|\.|\,/g, ''));
     }
 
     public getNewWord(): void {
@@ -86,11 +92,30 @@ export class AppComponent implements OnDestroy, OnInit {
     }
 
     public getWordsArray(sentence: string): string[] {
-        const words = sentence.split(' ').filter(word => !!word);
+        const words = sentence.replace(/\r?\n|\r/g, '').split(' ').filter(word => !!word);
         if (words.length) {
             const word = words[0];
             words[0] = word.charAt(0).toUpperCase() + word.slice(1);
         }
         return words;
     }
- }
+
+    public onThumbnailClick(hit: PixabayImageHit): void {
+        this.imageInFocus = hit;
+        this.modalService.open(this.content, {
+            centered: true,
+            size: 'lg',
+            // windowClass: 'transparent-modal'
+        })
+        .result
+        .then(() => {
+            // Already handled this means of closing the modal.
+        },
+        (reason) => {
+            // Since player clicked outside modal, have to handle the restart.
+            if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+                // this.goToMenu();
+            }
+        });
+    }
+}

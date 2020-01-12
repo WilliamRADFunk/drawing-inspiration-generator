@@ -31,7 +31,7 @@
                     </ng-container>
                 </div>
                 <ng-container *ngIf="images.length; else noImages">
-                    <div *ngFor="let image of images" class="d-inline-block p-3">
+                    <div *ngFor="let image of images" class="d-inline-block p-3" (click)="onThumbnailClick(image)">
                         <img [src]="image.previewURL" width="auto" height="auto" alt="image.tags"/>
                     </div>
                 </ng-container>
@@ -46,3 +46,24 @@
         </div>
     </div>
 </div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title w-100 h-100">
+            <span class="pull-left">{{ imageWord | titlecase }}</span>
+            <button
+                aria-label="Close"
+                type="button"
+                class="btn btn-danger btn-sm pull-right"
+                (click)="modal.dismiss()">
+                <span aria-hidden="true" class="fa fa-times"></span>
+            </button>
+        </h4>
+    </div>
+    <div class="modal-body mw-100 mh-100 text-center">
+        <img
+            [src]="imageInFocus.largeImageURL"
+            alt="imageInFocus.tags"
+            style="max-height: 80vh; max-width: 90%"/>
+    </div>
+</ng-template>
