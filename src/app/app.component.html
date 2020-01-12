@@ -16,14 +16,14 @@
                     <span
                       *ngFor="let word of getWordsArray(definitionOfDay);"
                       (click)="getImagesByWord(word)"
-                      class="pl-1 word">{{ word }}</span>
+                      class="d-inline-block pl-1 word">{{ word }}</span>
                 </div>
             </div>
         </div>
     </div>
     <div class="row text-dark">
         <div class="col-12 col-md-8 offset-md-2">
-            <div class="bg-light border border-white rounded word-box pt-2">
+            <div class="bg-light border border-white rounded word-box p-3">
                 <div class="h4 text-center">
                     <u>Related Images</u>
                     <ng-container *ngIf="imageWord">
@@ -31,7 +31,7 @@
                     </ng-container>
                 </div>
                 <ng-container *ngIf="images.length; else noImages">
-                    <div *ngFor="let image of images" class="d-inline-block p-3" (click)="onThumbnailClick(image)">
+                    <div *ngFor="let image of images" class="d-inline-block m-3 p-1 thumbnail rounded" (click)="onThumbnailClick(image)">
                         <img [src]="image.previewURL" width="auto" height="auto" alt="image.tags"/>
                     </div>
                 </ng-container>

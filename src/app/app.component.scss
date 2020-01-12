@@ -1,5 +1,11 @@
+.thumbnail:hover {
+    border: 2px solid #B19CD9;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
 .word-box {
-    min-height: 200px;
+    min-height: 250px;
 }
 
 .word:hover {
