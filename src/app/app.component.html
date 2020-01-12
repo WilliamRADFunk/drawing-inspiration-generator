@@ -27,7 +27,7 @@
                 <div class="h4 text-center">
                     <u>Related Images</u>
                     <ng-container *ngIf="imageWord">
-                        ( {{ imageWord }} )
+                        ( {{ imageWord | titlecase }} )
                     </ng-container>
                 </div>
                 <ng-container *ngIf="images.length; else noImages">
