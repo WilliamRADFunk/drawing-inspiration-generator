@@ -17,10 +17,13 @@ export class AppComponent implements OnDestroy, OnInit {
     private readonly subs: Subscription[] = [];
     @ViewChild('content', { static: true }) content: any;
     public definitionOfDay: string;
+    public currPage: number;
     public imageInFocus: PixabayImageHit;
     public images: PixabayImageHit[] = [];
     public imageWord: string;
+    public itemsPerPage: number;
     public readonly title: string = 'drawing-inspiration-generator';
+    public totalMatches: number;
     public wordOfDay: string;
 
     constructor(
@@ -63,6 +66,15 @@ export class AppComponent implements OnDestroy, OnInit {
             }),
             this.wordPicker.currentImageWord.subscribe(word => {
                 this.imageWord = word;
+            }),
+            this.wordPicker.currentPageNum.subscribe(pageNum => {
+                this.currPage = pageNum;
+            }),
+            this.wordPicker.currentTotalMatches.subscribe(totalMatches => {
+                this.totalMatches = totalMatches;
+            }),
+            this.wordPicker.currentItemsPerPage.subscribe(itemsPerPage => {
+                this.itemsPerPage = itemsPerPage;
             })
         );
     }
@@ -84,11 +96,27 @@ export class AppComponent implements OnDestroy, OnInit {
     }
 
     public getImagesByWord(word: string): void {
-        this.wordPicker.getImages(word.replace(/\;|\.|\,/g, ''));
+        this.wordPicker.changePage(1);
+        this.wordPicker.getImages(word.replace(/\;|\.|\,/g, ''), 1);
+    }
+
+    public getLeftPageBound(): number {
+        const expectedLeftBound = (this.currPage - 1) * this.itemsPerPage;
+        return expectedLeftBound <= 0 ? 1 : expectedLeftBound;
+    }
+
+    public getRightPageBound(): number {
+        const expectedRightBound = this.currPage * this.itemsPerPage;
+        return expectedRightBound <= this.totalMatches ? expectedRightBound : this.totalMatches;
     }
 
     public getNewWord(): void {
+        this.wordPicker.changePage(1);
         this.wordPicker.getWord(Math.random());
+    }
+
+    public getNumberOfPages(totalImages: number): number {
+        return Math.ceil(totalImages / 20);
     }
 
     public getWordsArray(sentence: string): string[] {
@@ -117,5 +145,17 @@ export class AppComponent implements OnDestroy, OnInit {
                 // this.goToMenu();
             }
         });
+    }
+
+    public pageDown(): void {
+        if (this.currPage > 1) {
+            this.wordPicker.changePage(this.currPage - 1);
+        }
+    }
+
+    public pageUp(): void {
+        if (this.currPage < this.getNumberOfPages(this.totalMatches)) {
+            this.wordPicker.changePage(this.currPage + 1);
+        }
     }
 }

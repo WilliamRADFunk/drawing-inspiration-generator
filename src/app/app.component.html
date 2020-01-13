@@ -29,6 +29,15 @@
                     <ng-container *ngIf="imageWord">
                         ( {{ imageWord | titlecase }} )
                     </ng-container>
+                    <ng-container *ngIf="getNumberOfPages(totalMatches) > 1">
+                        <button class="btn btn-sm btn-link pb-2" (click)="pageDown()" [disabled]="currPage <= 1">
+                            <span class="fa fa-arrow-left"></span>
+                        </button>
+                        <span class="h6">{{ getLeftPageBound() }} - {{ getRightPageBound() }} of {{ totalMatches }}</span>
+                        <button class="btn btn-sm btn-link pb-2" (click)="pageUp()" [disabled]="currPage >= getNumberOfPages(totalMatches)">
+                            <span class="fa fa-arrow-right"></span>
+                        </button>
+                    </ng-container>
                 </div>
                 <ng-container *ngIf="images.length; else noImages">
                     <div *ngFor="let image of images" class="d-inline-block m-3 p-1 thumbnail rounded" (click)="onThumbnailClick(image)">

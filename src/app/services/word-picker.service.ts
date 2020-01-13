@@ -19,19 +19,25 @@ export class WordPickerService {
     private API_KEY: string = PIXABAY_API_KEY;
     private API_URL: string = PIXABAY_API_URL;
     private URL: string = this.API_URL + this.API_KEY + '&q=';
-    private pageNum: number = 1;
+    private itemsPerPage: BehaviorSubject<number> = new BehaviorSubject<number>(20);
+    private pageNum: BehaviorSubject<number> = new BehaviorSubject<number>(1);
     private page: string = '&page=';
-    private perPage = '&per_page=20';
+    private perPage = '&per_page=' + this.itemsPerPage.value;
     private minHeight = '&min_height=200';
+    private totalMatches: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
     private definition: BehaviorSubject<string> = new BehaviorSubject<string>('Bubbles');
     private images: BehaviorSubject<PixabayImageHit[]> = new BehaviorSubject<PixabayImageHit[]>([]);
     private imageWord: BehaviorSubject<string> = new BehaviorSubject<string>('Bubbles');
     private seed: number;
     private word: BehaviorSubject<string> = new BehaviorSubject<string>('Bubbles');
+
     public currentDefinition: Observable<string> = this.definition.asObservable();
     public currentImages: Observable<PixabayImageHit[]> = this.images.asObservable();
     public currentImageWord: Observable<string> = this.imageWord.asObservable();
+    public currentItemsPerPage: Observable<number> = this.itemsPerPage.asObservable();
+    public currentPageNum: Observable<number> = this.pageNum.asObservable();
+    public currentTotalMatches: Observable<number> = this.totalMatches.asObservable();
     public currentWord: Observable<string> = this.word.asObservable();
 
     constructor(private http: HttpClient) {}
@@ -47,17 +53,27 @@ export class WordPickerService {
         return min + rnd * (max - min);
     }
 
+    public changePage(pageNum: number): void {
+        this.pageNum.next(pageNum >= 1 ? pageNum : this.pageNum.value);
+        setTimeout(() => {
+            this.getImages(this.imageWord.value, this.pageNum.value);
+        }, 10);
+    }
+
     public getImages(word: string, pageNum?: number): void {
-        this.http.get(this.URL + word + this.perPage + this.page + (pageNum || this.pageNum) + this.minHeight)
+        this.http.get(this.URL + word + this.perPage + this.page + (pageNum || this.pageNum.value) + this.minHeight)
             .pipe(take(1))
             .subscribe((results: PixabayImageSearchResponse) => {
                 console.log('results', results);
+                this.pageNum.next(pageNum || this.pageNum.value);
                 this.images.next(results.hits);
                 this.imageWord.next(word);
+                this.totalMatches.next(results.total);
             });
     }
 
     public getWord(seed: number): void {
+        this.pageNum.next(1);
         this.seed = seed;
         const rando = Math.floor(this.seededRandom(0, totalWords));
         let randomDef;
@@ -73,7 +89,7 @@ export class WordPickerService {
         this.imageWord.next(randomWord);
         this.definition.next(randomDef);
 
-        this.http.get(this.URL + randomWord + this.perPage + this.page + this.pageNum + this.minHeight)
+        this.http.get(this.URL + randomWord + this.perPage + this.page + this.pageNum.value + this.minHeight)
             .pipe(take(1))
             .subscribe((results: PixabayImageSearchResponse) => {
                 console.log('results', results);
