@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
 
 import { WordPickerService } from './services/word-picker.service';
 import { PixabayImageHit } from './models/pixabay-image-hit';
-import { PixabayImageSearchResponse } from './models/pixabay-image-search-response';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +15,7 @@ import { PixabayImageSearchResponse } from './models/pixabay-image-search-respon
 export class AppComponent implements OnDestroy, OnInit {
     private readonly subs: Subscription[] = [];
     @ViewChild('content', { static: true }) content: any;
+    @ViewChild('history', { static: true }) history: any;
     public definitionOfDay: string;
     public currPage: number;
     public imageInFocus: PixabayImageHit;
@@ -24,6 +24,7 @@ export class AppComponent implements OnDestroy, OnInit {
     public itemsPerPage: number;
     public readonly title: string = 'drawing-inspiration-generator';
     public totalMatches: number;
+    public wordHistory: { date: number; word: string; }[] = [];
     public wordOfDay: string;
 
     constructor(
@@ -75,6 +76,9 @@ export class AppComponent implements OnDestroy, OnInit {
             }),
             this.wordPicker.currentItemsPerPage.subscribe(itemsPerPage => {
                 this.itemsPerPage = itemsPerPage;
+            }),
+            this.wordPicker.currentWordHistory.subscribe(wordHistory => {
+                this.wordHistory = wordHistory;
             })
         );
     }
@@ -117,6 +121,25 @@ export class AppComponent implements OnDestroy, OnInit {
 
     public getNumberOfPages(totalImages: number): number {
         return Math.ceil(totalImages / 20);
+    }
+
+    public openWordHistoryModal(): void {
+        this.wordPicker.changeHistoryCount(10);
+        this.modalService.open(this.history, {
+            centered: true,
+            size: 'lg',
+            // windowClass: 'transparent-modal'
+        })
+        .result
+        .then(() => {
+            // Already handled this means of closing the modal.
+        },
+        (reason) => {
+            // Since player clicked outside modal, have to handle the restart.
+            if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+                // Clicked on backdrop to close
+            }
+        });
     }
 
     public getWordsArray(sentence: string): string[] {
