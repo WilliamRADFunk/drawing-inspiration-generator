@@ -24,7 +24,7 @@ export class AppComponent implements OnDestroy, OnInit {
     public itemsPerPage: number;
     public readonly title: string = 'drawing-inspiration-generator';
     public totalMatches: number;
-    public wordHistory: { date: number; word: string; }[] = [];
+    public wordHistory: { date: string; word: string; }[] = [];
     public wordOfDay: string;
 
     constructor(

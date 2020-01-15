@@ -31,7 +31,7 @@ export class WordPickerService {
     private imageWord: BehaviorSubject<string> = new BehaviorSubject<string>('Bubbles');
     private seed: number;
     private word: BehaviorSubject<string> = new BehaviorSubject<string>('Bubbles');
-    private wordHistory: BehaviorSubject<{ date: number; word: string; }[]> = new BehaviorSubject<{ date: number; word: string; }[]>([]);
+    private wordHistory: BehaviorSubject<{ date: string; word: string; }[]> = new BehaviorSubject<{ date: string; word: string; }[]>([]);
 
     public currentDefinition: Observable<string> = this.definition.asObservable();
     public currentImages: Observable<PixabayImageHit[]> = this.images.asObservable();
@@ -40,7 +40,7 @@ export class WordPickerService {
     public currentPageNum: Observable<number> = this.pageNum.asObservable();
     public currentTotalMatches: Observable<number> = this.totalMatches.asObservable();
     public currentWord: Observable<string> = this.word.asObservable();
-    public currentWordHistory: Observable<{ date: number; word: string; }[]> = this.wordHistory.asObservable();
+    public currentWordHistory: Observable<{ date: string; word: string; }[]> = this.wordHistory.asObservable();
 
     constructor(private http: HttpClient) {}
 
@@ -59,8 +59,8 @@ export class WordPickerService {
         let currSeed = this.seed; // Today's date
         const wordHistory = [];
         for (let i = 1; i < numDays; i++) {
-            currSeed = currSeed - (i * 60000 * 60 * 24); // i days before
-            wordHistory.push({ date: currSeed, word: this.getWordFromDictionary(currSeed) });
+            currSeed = currSeed - (1000 * 60 * 60 * 24); // i days before
+            wordHistory.push({ date: new Date(currSeed).toISOString().split('T')[0], word: this.getWordFromDictionary(currSeed) });
         }
         this.wordHistory.next(wordHistory.slice());
     }
@@ -103,6 +103,7 @@ export class WordPickerService {
 
     private getWordFromDictionary(seed: number): string {
         const oldSeed = this.seed;
+        this.seed = seed;
         const rando = Math.floor(this.seededRandom(0, totalWords));
         let randomWord;
         keys.some((key, index) => {

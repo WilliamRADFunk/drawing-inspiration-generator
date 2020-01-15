@@ -9,7 +9,13 @@
                 <div class="h4 text-center ml-4">
                     <u>Word of the day</u>
                     <span class="pull-right mr-2">
-                        <button class="btn btn-sm btn-outline-light" (click)="openWordHistoryModal()"><span class="fa fa-clock-o"></span></button>
+                        <button
+                            class="btn btn-sm btn-outline-light"
+                            (click)="openWordHistoryModal()"
+                            ngbTooltip="See words from previous days"
+                            tooltipClass="dig-tooltip">
+                            <span class="fa fa-clock-o"></span>
+                        </button>
                     </span>
                 </div>
                 <div class="h5 pl-3">
@@ -18,7 +24,9 @@
             </div>
         </div>
         <div class="col-12 col-md-5 mb-3">
-            <div class="bg-info border border-white rounded word-box pt-2">
+            <div class="bg-info border border-white rounded word-box pt-2"
+                ngbTooltip="Click on a word in the definition to find images for that related word"
+                tooltipClass="dig-tooltip">
                 <div class="h4 text-center"><u>Definition</u></div>
                 <div class="h5 pl-2">
                     <span
@@ -99,6 +107,9 @@
         </h4>
     </div>
     <div class="modal-body mw-100 mh-100 text-center">
-        <span *ngFor="let word of wordHistory">Date {{ word.date }}: {{ word.word }}</span>
+        <div *ngFor="let word of wordHistory" class="w-50 mx-auto">
+            <div class="d-inline-block text-left w-50">{{ word.date }}:</div>
+            <div class="d-inline-block text-right w-50">{{ word.word }}</div>
+        </div>
     </div>
 </ng-template>
