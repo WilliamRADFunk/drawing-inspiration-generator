@@ -100,9 +100,10 @@ export class AppComponent implements OnDestroy, OnInit {
     }
 
     public changeDay(date: string): void {
+        this.modalService.dismissAll();
         this.router.navigate([], {
             queryParams: { date },
-            queryParamsHandling: 'merge'
+            queryParamsHandling: 'merge',
         });
     }
 
