@@ -99,6 +99,13 @@ export class AppComponent implements OnDestroy, OnInit {
         });
     }
 
+    public changeDay(date: string): void {
+        this.router.navigate([], {
+            queryParams: { date },
+            queryParamsHandling: 'merge'
+        });
+    }
+
     public getImagesByWord(word: string): void {
         this.wordPicker.changePage(1);
         this.wordPicker.getImages(word.replace(/\;|\.|\,/g, ''), 1);

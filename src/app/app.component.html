@@ -1,7 +1,6 @@
 <div class="w-100 h-100">
     <div class="h1 text-center my-4">
         Drawing Inspiration Generator
-
     </div>
     <div class="row text-white">
         <div class="col-12 col-md-3 offset-md-2 mb-3">
@@ -108,7 +107,9 @@
     </div>
     <div class="modal-body mw-100 mh-100 text-center">
         <div *ngFor="let word of wordHistory" class="w-50 mx-auto">
-            <div class="d-inline-block text-left w-50">{{ word.date }}:</div>
+            <div
+                (click)="changeDay(word.date)"
+                class="d-inline-block text-left w-50 historical-date">{{ word.date }}:</div>
             <div class="d-inline-block text-right w-50">{{ word.word }}</div>
         </div>
     </div>
