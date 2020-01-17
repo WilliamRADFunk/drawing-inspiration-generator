@@ -109,7 +109,7 @@
         <div *ngFor="let word of wordHistory" class="w-50 mx-auto">
             <div
                 (click)="changeDay(word.date)"
-                class="d-inline-block text-left w-50 historical-date">{{ word.date }}:</div>
+                class="d-inline-block text-left w-50 historical-date">{{ formatDate(word.date) }}:</div>
             <div class="d-inline-block text-right w-50">{{ word.word }}</div>
         </div>
     </div>

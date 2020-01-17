@@ -101,10 +101,17 @@ export class AppComponent implements OnDestroy, OnInit {
 
     public changeDay(date: string): void {
         this.modalService.dismissAll();
-        this.router.navigate([], {
-            queryParams: { date },
-            queryParamsHandling: 'merge',
-        });
+        setTimeout(() => {
+            this.router.navigate([], {
+                queryParams: { date },
+                queryParamsHandling: 'merge',
+            });
+        }, 200);
+    }
+
+    public formatDate(date: string): string {
+        const dateParts = date.split('-');
+        return dateParts[1] + '-' + dateParts[2]  + '-' + dateParts[0];
     }
 
     public getImagesByWord(word: string): void {
@@ -131,25 +138,6 @@ export class AppComponent implements OnDestroy, OnInit {
         return Math.ceil(totalImages / 20);
     }
 
-    public openWordHistoryModal(): void {
-        this.wordPicker.changeHistoryCount(10);
-        this.modalService.open(this.history, {
-            centered: true,
-            size: 'lg',
-            // windowClass: 'transparent-modal'
-        })
-        .result
-        .then(() => {
-            // Already handled this means of closing the modal.
-        },
-        (reason) => {
-            // Since player clicked outside modal, have to handle the restart.
-            if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-                // Clicked on backdrop to close
-            }
-        });
-    }
-
     public getWordsArray(sentence: string): string[] {
         const words = sentence.replace(/\r?\n|\r/g, '').split(' ').filter(word => !!word);
         if (words.length) {
@@ -174,6 +162,25 @@ export class AppComponent implements OnDestroy, OnInit {
             // Since player clicked outside modal, have to handle the restart.
             if (reason === ModalDismissReasons.BACKDROP_CLICK) {
                 // this.goToMenu();
+            }
+        });
+    }
+
+    public openWordHistoryModal(): void {
+        this.wordPicker.changeHistoryCount(10);
+        this.modalService.open(this.history, {
+            centered: true,
+            size: 'lg',
+            // windowClass: 'transparent-modal'
+        })
+        .result
+        .then(() => {
+            // Already handled this means of closing the modal.
+        },
+        (reason) => {
+            // Since player clicked outside modal, have to handle the restart.
+            if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+                // Clicked on backdrop to close
             }
         });
     }
