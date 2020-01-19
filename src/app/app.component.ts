@@ -22,6 +22,29 @@ export class AppComponent implements OnDestroy, OnInit {
     public images: PixabayImageHit[] = [];
     public imageWord: string;
     public itemsPerPage: number;
+    public timeIntervalLabel: string = '10 Days';
+    public timeIntervals: {label: string, value: number}[] = [
+    {
+      label: '10 Days',
+      value: 10
+    },
+    {
+      label: '30 Days',
+      value: 30
+    },
+    {
+      label: '60 Days',
+      value: 60
+    },
+    {
+      label: '90 Days',
+      value: 90
+    },
+    {
+      label: '180 Days',
+      value: 180
+    }
+  ]
     public readonly title: string = 'drawing-inspiration-generator';
     public totalMatches: number;
     public wordHistory: { date: string; word: string; }[] = [];
@@ -109,6 +132,11 @@ export class AppComponent implements OnDestroy, OnInit {
         }, 200);
     }
 
+    public changedTimeInterval(days: {label: string, value: number}): void {
+        this.timeIntervalLabel = days.label;
+        this.wordPicker.changeHistoryCount(days.value);
+    }
+
     public formatDate(date: string): string {
         const dateParts = date.split('-');
         return dateParts[1] + '-' + dateParts[2]  + '-' + dateParts[0];
@@ -167,6 +195,7 @@ export class AppComponent implements OnDestroy, OnInit {
     }
 
     public openWordHistoryModal(): void {
+        this.timeIntervalLabel = '10 Days';
         this.wordPicker.changeHistoryCount(10);
         this.modalService.open(this.history, {
             centered: true,

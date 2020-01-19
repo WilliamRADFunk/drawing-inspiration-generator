@@ -110,6 +110,28 @@
                 (click)="modal.dismiss()">
                 <span aria-hidden="true" class="fa fa-times"></span>
             </button>
+            <div
+                class="btn-group pull-right mr-2"
+                ngbDropdown
+                role="group"
+                aria-label="Button group with nested dropdown">
+                <div>
+                    <button
+                        class="btn btn-sm btn-outline-primary d-inline-block"
+                        ngbDropdownToggle
+                        style="vertical-align: top;">
+                        {{ timeIntervalLabel }}
+                    </button>
+                </div>
+                <div class="dropdown-menu" ngbDropdownMenu>
+                    <button
+                        class="dropdown-item"
+                        *ngFor="let interval of timeIntervals"
+                        (click)="changedTimeInterval(interval)">
+                        {{ interval.label }}
+                    </button>
+                </div>
+            </div>
         </h4>
     </div>
     <div class="modal-body mw-100 mh-100 text-center">
