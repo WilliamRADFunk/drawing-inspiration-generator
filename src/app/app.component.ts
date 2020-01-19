@@ -196,4 +196,8 @@ export class AppComponent implements OnDestroy, OnInit {
             this.wordPicker.changePage(this.currPage + 1);
         }
     }
+
+    public resetWordOfDay(): void {
+        this.updateParams(new Date().setUTCHours(0, 0, 0, 0));
+    }
 }

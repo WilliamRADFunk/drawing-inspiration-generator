@@ -5,7 +5,7 @@
     <div class="row text-white">
         <div class="col-12 col-md-3 offset-md-2 mb-3">
             <div class="bg-info border border-white rounded word-box pt-2">
-                <div class="h4 text-center ml-4">
+                <div class="h4 text-center ml-5">
                     <u>Word of the day</u>
                     <span class="pull-right mr-2">
                         <button
@@ -14,6 +14,13 @@
                             ngbTooltip="See words from previous days"
                             tooltipClass="dig-tooltip">
                             <span class="fa fa-clock-o"></span>
+                        </button>
+                        <button
+                            class="btn btn-sm btn-outline-light ml-1"
+                            (click)="resetWordOfDay()"
+                            ngbTooltip="See word for today"
+                            tooltipClass="dig-tooltip">
+                            <span class="fa fa-refresh"></span>
                         </button>
                     </span>
                 </div>
