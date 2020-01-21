@@ -42,7 +42,9 @@ export class WordPickerService {
     public currentWord: Observable<string> = this.word.asObservable();
     public currentWordHistory: Observable<{ date: string; word: string; }[]> = this.wordHistory.asObservable();
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {
+      console.log('Total words', totalWords);
+    }
 
     // Credit to http://indiegamr.com/generate-repeatable-random-numbers-in-js/
     private seededRandom(max: number, min: number): number {

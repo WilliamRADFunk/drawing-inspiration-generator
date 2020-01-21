@@ -16,7 +16,6 @@ export class AppComponent implements OnDestroy, OnInit {
     private readonly subs: Subscription[] = [];
     @ViewChild('content', { static: true }) content: any;
     @ViewChild('history', { static: true }) history: any;
-    @ViewChild('t', { static: true }) public readonly tooltip: NgbTooltip;
     public definitionOfDay: string;
     public currPage: number;
     public imageInFocus: PixabayImageHit;
@@ -25,27 +24,27 @@ export class AppComponent implements OnDestroy, OnInit {
     public itemsPerPage: number;
     public timeIntervalLabel: string = '10 Days';
     public timeIntervals: {label: string, value: number}[] = [
-    {
-      label: '10 Days',
-      value: 10
-    },
-    {
-      label: '30 Days',
-      value: 30
-    },
-    {
-      label: '60 Days',
-      value: 60
-    },
-    {
-      label: '90 Days',
-      value: 90
-    },
-    {
-      label: '180 Days',
-      value: 180
-    }
-  ]
+        {
+            label: '10 Days',
+            value: 10
+        },
+        {
+            label: '30 Days',
+            value: 30
+        },
+        {
+            label: '60 Days',
+            value: 60
+        },
+        {
+            label: '90 Days',
+            value: 90
+        },
+        {
+            label: '180 Days',
+            value: 180
+        }
+    ];
     public readonly title: string = 'drawing-inspiration-generator';
     public totalMatches: number;
     public wordHistory: { date: string; word: string; }[] = [];
@@ -105,16 +104,6 @@ export class AppComponent implements OnDestroy, OnInit {
                 this.wordHistory = wordHistory;
             })
         );
-    }
-
-    private closeTooltip(): void {
-        if (!this.tooltip) {
-          return;
-        }
-        const isOpen = this.tooltip.isOpen();
-        if (isOpen) {
-          this.tooltip.close();
-        }
     }
 
     private updateParams(date: number): void {
@@ -224,10 +213,6 @@ export class AppComponent implements OnDestroy, OnInit {
                 // Clicked on backdrop to close
             }
         });
-
-        setTimeout(() => {
-            this.closeTooltip();
-        }, 10);
     }
 
     public pageDown(): void {

@@ -8,18 +8,20 @@
                 <div class="h4 text-center ml-5">
                     <u>Word of the day</u>
                     <span class="pull-right mr-2">
-                        <button #t="ngbTooltip"
+                        <button
                             class="btn btn-sm btn-outline-light"
                             (click)="openWordHistoryModal()"
                             ngbTooltip="See words from previous days"
-                            tooltipClass="dig-tooltip">
+                            tooltipClass="dig-tooltip"
+                            triggers="hover">
                             <span class="fa fa-clock-o"></span>
                         </button>
                         <button
                             class="btn btn-sm btn-outline-light ml-1"
                             (click)="resetWordOfDay()"
                             ngbTooltip="See word for today"
-                            tooltipClass="dig-tooltip">
+                            tooltipClass="dig-tooltip"
+                            triggers="hover">
                             <span class="fa fa-refresh"></span>
                         </button>
                     </span>
@@ -107,7 +109,11 @@
                 aria-label="Close"
                 type="button"
                 class="btn btn-danger btn-sm pull-right"
-                (click)="modal.dismiss()">
+                (click)="modal.dismiss()"
+                ngbTooltip="Close modal"
+                placement="right"
+                tooltipClass="dig-tooltip"
+                triggers="hover">
                 <span aria-hidden="true" class="fa fa-times"></span>
             </button>
             <div
@@ -119,7 +125,11 @@
                     <button
                         class="btn btn-sm btn-outline-primary d-inline-block"
                         ngbDropdownToggle
-                        style="vertical-align: top;">
+                        style="vertical-align: top;"
+                        ngbTooltip="See previous words from days farther back in time"
+                        placement="left"
+                        tooltipClass="dig-tooltip"
+                        triggers="hover">
                         {{ timeIntervalLabel }}
                     </button>
                 </div>
