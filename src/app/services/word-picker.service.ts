@@ -9,7 +9,26 @@ import { dictionary } from '../utils/dictionary';
 import { PixabayImageHit } from '../models/pixabay-image-hit';
 import { PixabayImageSearchResponse } from '../models/pixabay-image-search-response';
 
-const keys = Object.keys(dictionary);
+const unlikedWords = [
+    'qua'
+];
+
+const uselessWords = [
+    'to',
+    'the',
+    'a',
+    'or',
+    'in'
+];
+
+const keys = Object.keys(dictionary).filter(key => {
+    const definition = dictionary[key].split(' ').filter(word => !uselessWords.includes(word.toLowerCase()));
+    if (definition.length < 4 || unlikedWords.includes(key.toLowerCase()) || key.charAt(key.length - 1) === '-') {
+        return false;
+    }
+    return true;
+});
+
 const totalWords = keys.length;
 
 @Injectable({
@@ -44,17 +63,6 @@ export class WordPickerService {
 
     constructor(private http: HttpClient) {
       console.log('Total words', totalWords);
-    }
-
-    // Credit to http://indiegamr.com/generate-repeatable-random-numbers-in-js/
-    private seededRandom(max: number, min: number): number {
-        max = max || 1;
-        min = min || 0;
-
-        this.seed = (this.seed * 9301 + 49297) % 233280;
-        const rnd = this.seed / 233280;
-
-        return min + rnd * (max - min);
     }
 
     public changeHistoryCount(numDays: number): void {
@@ -104,9 +112,7 @@ export class WordPickerService {
     }
 
     private getWordFromDictionary(seed: number): string {
-        const oldSeed = this.seed;
-        this.seed = seed;
-        const rando = Math.floor(this.seededRandom(0, totalWords));
+        const rando = seed % totalWords;
         let randomWord;
         keys.some((key, index) => {
             if (index === rando) {
@@ -114,7 +120,6 @@ export class WordPickerService {
               return true;
             }
         });
-        this.seed = oldSeed;
         return randomWord;
     }
 }
