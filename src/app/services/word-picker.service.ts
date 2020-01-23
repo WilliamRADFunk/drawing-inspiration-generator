@@ -23,7 +23,10 @@ const uselessWords = [
 
 const keys = Object.keys(dictionary).filter(key => {
     const definition = dictionary[key].split(' ').filter(word => !uselessWords.includes(word.toLowerCase()));
-    if (definition.length < 4 || unlikedWords.includes(key.toLowerCase()) || key.charAt(key.length - 1) === '-') {
+    if (definition.length < 4
+        || unlikedWords.includes(key.toLowerCase())
+        || key.charAt(key.length - 1) === '-'
+        || key.charAt(0) === '-') {
         return false;
     }
     return true;
