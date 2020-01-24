@@ -138,8 +138,10 @@ export class AppComponent implements OnDestroy, OnInit {
     }
 
     public formatDate(date: string): string {
-        const dateParts = date.split('-');
-        return dateParts[1] + '-' + dateParts[2]  + '-' + dateParts[0];
+        if (date) {
+            const dateParts = date.split('-');
+            return dateParts[1] + '-' + dateParts[2]  + '-' + dateParts[0];
+        }
     }
 
     public getImagesByWord(word: string): void {

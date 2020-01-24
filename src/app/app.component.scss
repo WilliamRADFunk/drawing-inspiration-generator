@@ -7,6 +7,14 @@
     text-decoration: underline;
 }
 
+.table-overflow {
+    overflow-y: scroll;
+}
+
+.modal-max {
+    max-height: 300px;
+}
+
 .thumbnail:hover {
     border: 2px solid #B19CD9;
     box-sizing: border-box;

@@ -144,40 +144,26 @@
             </div>
         </h4>
     </div>
-    <div class="modal-body mw-100 mh-100 text-center">
-        <div class="row">
-            <div class="col-6">
-                <table class="table table-striped d-inline-block">
-                    <tbody>
-                        <ng-container *ngFor="let word of wordHistory; let odd = odd">
-                            <tr *ngIf="!odd">
-                                <td (click)="changeDay(word.date)" class="text-left historical-date">
-                                    {{ formatDate(word.date) }}
-                                </td>
-                                <td (click)="changeDay(word.date)" class="text-right historical-date">
-                                    {{ word.word }}
-                                </td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-6">
-                <table class="table table-striped d-inline-block">
-                    <tbody>
-                        <ng-container *ngFor="let word of wordHistory; let odd = odd">
-                            <tr *ngIf="odd">
-                                <td (click)="changeDay(word.date)" class="text-left historical-date">
-                                    {{ formatDate(word.date) }}
-                                </td>
-                                <td (click)="changeDay(word.date)" class="text-right historical-date">
-                                    {{ word.word }}
-                                </td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="modal-body mw-100 mh-100 h-100 text-center modal-max">
+        <table class="table table-striped w-100 table-overflow">
+            <tbody>
+                <ng-container *ngFor="let word of wordHistory; let odd = odd; let index = index">
+                    <tr *ngIf="!odd">
+                        <td (click)="changeDay(word.date)" class="text-left historical-date">
+                            {{ formatDate(word.date) }}
+                        </td>
+                        <td (click)="changeDay(word.date)" class="text-right historical-date">
+                            {{ word.word }}
+                        </td>
+                        <td (click)="changeDay(wordHistory[index + 1]?.date)" class="text-left historical-date">
+                            {{ formatDate(wordHistory[index + 1]?.date) }}
+                        </td>
+                        <td (click)="changeDay(wordHistory[index + 1]?.date)" class="text-right historical-date">
+                            {{ wordHistory[index + 1]?.word }}
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
     </div>
 </ng-template>
