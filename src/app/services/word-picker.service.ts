@@ -26,7 +26,8 @@ const keys = Object.keys(dictionary).filter(key => {
     if (definition.length < 4
         || unlikedWords.includes(key.toLowerCase())
         || key.charAt(key.length - 1) === '-'
-        || key.charAt(0) === '-') {
+        || key.charAt(0) === '-'
+        || key.split(' ').length > 1) {
         return false;
     }
     return true;
