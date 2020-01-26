@@ -7,12 +7,9 @@
     text-decoration: underline;
 }
 
-.table-overflow {
-    overflow-y: scroll;
-}
-
 .modal-max {
-    max-height: 300px;
+    max-height: 75vh;
+    overflow-y: auto;
 }
 
 .thumbnail:hover {
