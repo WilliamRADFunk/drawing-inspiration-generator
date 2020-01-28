@@ -10,7 +10,8 @@ import { PixabayImageHit } from '../models/pixabay-image-hit';
 import { PixabayImageSearchResponse } from '../models/pixabay-image-search-response';
 
 const unlikedWords = [
-    'qua'
+    'qua',
+    'quixotical'
 ];
 
 const uselessWords = [
