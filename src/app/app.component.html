@@ -18,6 +18,14 @@
                         </button>
                         <button
                             class="btn btn-sm btn-outline-light ml-1"
+                            (click)="getRandomWord()"
+                            ngbTooltip="Get a word at random"
+                            tooltipClass="dig-tooltip"
+                            triggers="hover">
+                            <span class="fa fa-random"></span>
+                        </button>
+                        <button
+                            class="btn btn-sm btn-outline-light ml-1"
                             (click)="resetWordOfDay()"
                             ngbTooltip="See word for today"
                             tooltipClass="dig-tooltip"

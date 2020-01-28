@@ -157,13 +157,13 @@ export class AppComponent implements OnDestroy, OnInit {
         return expectedRightBound <= this.totalMatches ? expectedRightBound : this.totalMatches;
     }
 
-    public getNewWord(): void {
-        this.wordPicker.changePage(1);
-        this.wordPicker.getWord(Math.random());
-    }
-
     public getNumberOfPages(totalImages: number): number {
         return Math.ceil(totalImages / 20);
+    }
+
+    public getRandomWord(): void {
+        this.wordPicker.changePage(1);
+        this.wordPicker.getWord(Math.floor(100000 * Math.random()));
     }
 
     public getWordsArray(sentence: string): string[] {
@@ -228,6 +228,9 @@ export class AppComponent implements OnDestroy, OnInit {
     }
 
     public resetWordOfDay(): void {
-        this.updateParams(new Date().setUTCHours(0, 0, 0, 0));
+        this.wordPicker.changePage(1);
+        const today = new Date().setUTCHours(0, 0, 0, 0);
+        this.wordPicker.getWord(today);
+        this.updateParams(today);
     }
 }
