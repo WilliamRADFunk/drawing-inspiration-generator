@@ -3,10 +3,10 @@
         Drawing Inspiration Generator
     </div>
     <div class="row text-white">
-        <div class="col-12 col-md-3 offset-md-2 mb-3">
+        <div class="col-12 col-lg-3 offset-lg-2 mb-3">
             <div class="bg-info border border-white rounded word-box pt-2">
-                <div class="h4 text-center ml-5">
-                    <u>Word of the day</u>
+                <div class="h5 text-left pl-3">
+                    <u>Word</u>
                     <span class="pull-right mr-2">
                         <button
                             class="btn btn-sm btn-outline-light"
@@ -34,17 +34,17 @@
                         </button>
                     </span>
                 </div>
-                <div class="h5 pl-3">
+                <div class="h5 pl-3 pt-3">
                     <span class="word" (click)="getImagesByWord(wordOfDay)">{{ wordOfDay | titlecase }}</span>
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-5 mb-3">
+        <div class="col-12 col-lg-5 mb-3">
             <div class="bg-info border border-white rounded word-box pt-2"
                 ngbTooltip="Click on a word in the definition to find images for that related word"
                 tooltipClass="dig-tooltip">
-                <div class="h4 text-center"><u>Definition</u></div>
-                <div class="h5 pl-2">
+                <div class="h5 text-left pl-3"><u>Definition</u></div>
+                <div class="h5 pl-2 pt-3">
                     <span
                       *ngFor="let word of getWordsArray(definitionOfDay);"
                       (click)="getImagesByWord(word)"
@@ -54,9 +54,9 @@
         </div>
     </div>
     <div class="row text-dark">
-        <div class="col-12 col-md-8 offset-md-2">
+        <div class="col-12 col-lg-8 offset-lg-2">
             <div class="bg-light border border-white rounded word-box p-3">
-                <div class="h4 text-center">
+                <div class="h5 text-left">
                     <u>Related Images</u>
                     <ng-container *ngIf="imageWord">
                         ( {{ imageWord | titlecase }} )
@@ -77,7 +77,7 @@
                     </div>
                 </ng-container>
                 <ng-template #noImages>
-                    <div class="h5 p-3">
+                    <div class="h5 pt-3">
                         No images came back for this word.
                         <br/>
                         Try clicking on a word in the definition for images related to that.
@@ -90,7 +90,7 @@
 
 <ng-template #content let-modal>
     <div class="modal-header">
-        <h4 class="modal-title w-100 h-100">
+        <h5 class="modal-title w-100 h-100">
             <span class="pull-left">{{ imageWord | titlecase }}</span>
             <button
                 aria-label="Close"
@@ -99,7 +99,7 @@
                 (click)="modal.dismiss()">
                 <span aria-hidden="true" class="fa fa-times"></span>
             </button>
-        </h4>
+        </h5>
     </div>
     <div class="modal-body mw-100 mh-100 text-center">
         <img
@@ -111,7 +111,7 @@
 
 <ng-template #history let-modal>
     <div class="modal-header">
-        <h4 class="modal-title w-100 h-100">
+        <h5 class="modal-title w-100 h-100">
             <span class="pull-left">Previous Words</span>
             <button
                 aria-label="Close"
@@ -150,42 +150,28 @@
                     </button>
                 </div>
             </div>
-        </h4>
+        </h5>
     </div>
-    <div class="modal-body mw-100 mh-100 text-center">
-        <div class="row">
-            <div class="col-6">
-                <table class="table table-striped d-inline-block">
-                    <tbody>
-                        <ng-container *ngFor="let word of wordHistory; let odd = odd">
-                            <tr *ngIf="!odd">
-                                <td (click)="changeDay(word.date)" class="text-left historical-date">
-                                    {{ formatDate(word.date) }}
-                                </td>
-                                <td (click)="changeDay(word.date)" class="text-right historical-date">
-                                    {{ word.word }}
-                                </td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-6">
-                <table class="table table-striped d-inline-block">
-                    <tbody>
-                        <ng-container *ngFor="let word of wordHistory; let odd = odd">
-                            <tr *ngIf="odd">
-                                <td (click)="changeDay(word.date)" class="text-left historical-date">
-                                    {{ formatDate(word.date) }}
-                                </td>
-                                <td (click)="changeDay(word.date)" class="text-right historical-date">
-                                    {{ word.word }}
-                                </td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="modal-body mw-100 text-center modal-max">
+        <table class="table table-striped w-100">
+            <tbody>
+                <ng-container *ngFor="let word of wordHistory; let odd = odd; let index = index">
+                    <tr *ngIf="!odd">
+                        <td (click)="changeDay(word.date)" class="text-left historical-date">
+                            {{ formatDate(word.date) }}
+                        </td>
+                        <td (click)="changeDay(word.date)" class="text-right historical-date">
+                            {{ word.word }}
+                        </td>
+                        <td (click)="changeDay(wordHistory[index + 1]?.date)" class="text-left historical-date">
+                            {{ formatDate(wordHistory[index + 1]?.date) }}
+                        </td>
+                        <td (click)="changeDay(wordHistory[index + 1]?.date)" class="text-right historical-date">
+                            {{ wordHistory[index + 1]?.word }}
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
     </div>
 </ng-template>

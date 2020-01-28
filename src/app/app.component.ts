@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
-import { NgbModal, ModalDismissReasons, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 
 import { WordPickerService } from './services/word-picker.service';
@@ -67,7 +67,6 @@ export class AppComponent implements OnDestroy, OnInit {
                 let queriedDateAsDate: number;
                 if (params.has('date')) {
                     const queriedDate: string = params.get('date');
-                    console.log('queriedDate', queriedDate);
                     queriedDateAsDate = Date.parse(queriedDate);
 
                     if (isNaN(queriedDateAsDate) === false) {
@@ -138,8 +137,10 @@ export class AppComponent implements OnDestroy, OnInit {
     }
 
     public formatDate(date: string): string {
-        const dateParts = date.split('-');
-        return dateParts[1] + '-' + dateParts[2]  + '-' + dateParts[0];
+        if (date) {
+            const dateParts = date.split('-');
+            return dateParts[1] + '-' + dateParts[2]  + '-' + dateParts[0];
+        }
     }
 
     public getImagesByWord(word: string): void {
