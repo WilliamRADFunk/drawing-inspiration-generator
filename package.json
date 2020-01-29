@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "run-s clean lint test build:ng copy:configs",
+    "build": "run-s clean lint build:ng copy:configs",
     "build:ng": "ng build drawing-inspiration-generator --prod --base-href=/applications/drawing-inspiration-generator/",
     "clean": "rimraf dist/",
     "copy:configs": "cpx src/assets/configs/.htaccess dist/drawing-inspiration-generator/",
