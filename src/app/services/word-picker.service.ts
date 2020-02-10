@@ -99,7 +99,33 @@ export class WordPickerService {
             });
     }
 
-    public getWord(seed: number): void {
+    public getSpecificWord(word): boolean {
+        let wordIndex;
+        const success = keys.some((key, index) => {
+            if (key === word) {
+              wordIndex = index;
+              return true;
+            }
+        });
+
+        if (!success) {
+            return false;
+        }
+
+        this.word.next(word);
+        this.imageWord.next(word);
+        this.definition.next(dictionary[word]);
+
+        this.http.get(this.URL + word + this.perPage + this.page + this.pageNum.value + this.minHeight)
+            .pipe(take(1))
+            .subscribe((results: PixabayImageSearchResponse) => {
+                this.images.next(results.hits);
+            });
+
+        return true;
+    }
+
+    public getWord(seed: number): string {
         this.pageNum.next(1);
         this.seed = seed;
         const randomWord = this.getWordFromDictionary(seed);
@@ -114,6 +140,8 @@ export class WordPickerService {
                 console.log('results', results);
                 this.images.next(results.hits);
             });
+
+        return randomWord;
     }
 
     private getWordFromDictionary(seed: number): string {

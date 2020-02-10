@@ -3,10 +3,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
-import { AppComponent } from './app.component';
-import { WordPickerService } from './services/word-picker.service';
+import { FrameComponent } from './frame.component';
+import { WordPickerService } from '../../services/word-picker.service';
 
-describe('AppComponent', () => {
+describe('FrameComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -15,13 +15,14 @@ describe('AppComponent', () => {
         RouterModule.forRoot([], {useHash: true})
       ],
       declarations: [
-        AppComponent
+        FrameComponent
       ],
+      providers: [ WordPickerService ],
     }).compileComponents();
   }));
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(FrameComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   });

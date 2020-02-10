@@ -7,16 +7,21 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { WordPickerService } from './services/word-picker.service';
+import { FrameComponent } from './components/frame/frame.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FrameComponent
   ],
   imports: [
     BrowserModule,
     NgbModule,
     HttpClientModule,
-    RouterModule.forRoot([], {useHash: true})
+    RouterModule.forRoot([{
+        path: '**',
+        component: FrameComponent
+    }], {useHash: true})
   ],
   providers: [ WordPickerService ],
   bootstrap: [ AppComponent ]
