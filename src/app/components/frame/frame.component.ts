@@ -7,12 +7,15 @@ import { Subscription } from 'rxjs';
 import { WordPickerService } from '../../services/word-picker.service';
 import { PixabayImageHit } from '../../models/pixabay-image-hit';
 
+const ONE_DAY = 60000 * 60 * 24;
+
 @Component({
   selector: 'app-frame',
   templateUrl: './frame.component.html',
   styleUrls: ['./frame.component.scss']
 })
 export class FrameComponent implements OnDestroy, OnInit {
+    private currDate: number;
     private readonly subs: Subscription[] = [];
     @ViewChild('content', { static: true }) content: any;
     @ViewChild('history', { static: true }) history: any;
@@ -79,7 +82,8 @@ export class FrameComponent implements OnDestroy, OnInit {
 
                     if (isNaN(queriedDateAsDate) === false) {
                         console.log('Oops', isNaN(queriedDateAsDate) === false);
-                        this.wordPicker.getWord(new Date(queriedDateAsDate).setUTCHours(0, 0, 0, 0));
+                        this.currDate = new Date(queriedDateAsDate).setUTCHours(0, 0, 0, 0);
+                        this.wordPicker.getWord(this.currDate);
                     } else {
                         console.log('utcdate', 'isNaN');
                         this.updateParams({ date: new Date().setUTCHours(0, 0, 0, 0), random: null });
@@ -190,6 +194,12 @@ export class FrameComponent implements OnDestroy, OnInit {
         this.updateParams({ date: null, random: word });
     }
 
+    public getTomorrowWord(): void {
+        this.currDate = this.currDate + ONE_DAY;
+        this.wordPicker.getWord(this.currDate);
+        this.updateParams({ date: this.currDate, random: null });
+    }
+
     public getWordsArray(sentence: string): string[] {
         const words = sentence.replace(/\r?\n|\r/g, '').split(' ').filter(word => !!word);
         if (words.length) {
@@ -255,7 +265,8 @@ export class FrameComponent implements OnDestroy, OnInit {
         console.log('resetWordOfDay');
         this.wordPicker.changePage(1);
         const today = new Date().setUTCHours(0, 0, 0, 0);
-        this.wordPicker.getWord(today);
+        this.currDate = today;
+        this.wordPicker.getWord(this.currDate);
         this.updateParams({ date: today, random: null });
     }
 }

@@ -1,4 +1,3 @@
-<p>frame works!</p>
 <div class="w-100 h-100">
     <div class="h1 text-center my-4">
         Drawing Inspiration Generator
@@ -16,6 +15,14 @@
                             tooltipClass="dig-tooltip"
                             triggers="hover">
                             <span class="fa fa-clock-o"></span>
+                        </button>
+                        <button
+                            class="btn btn-sm btn-outline-light ml-1"
+                            (click)="getTomorrowWord()"
+                            ngbTooltip="See tomorrow's word"
+                            tooltipClass="dig-tooltip"
+                            triggers="hover">
+                            <span class="fa fa-fast-forward"></span>
                         </button>
                         <button
                             class="btn btn-sm btn-outline-light ml-1"
