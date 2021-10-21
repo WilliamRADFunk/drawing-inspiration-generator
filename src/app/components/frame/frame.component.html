@@ -33,6 +33,14 @@
                             <span class="fa fa-random"></span>
                         </button>
                         <button
+                            class="btn btn-sm btn-outline-light"
+                            (click)="openWordSearchModal()"
+                            ngbTooltip="Search for a specific word"
+                            tooltipClass="dig-tooltip"
+                            triggers="hover">
+                            <span class="fa fa-search"></span>
+                        </button>
+                        <button
                             class="btn btn-sm btn-outline-light ml-1"
                             (click)="resetWordOfDay()"
                             ngbTooltip="See word for today"
@@ -181,5 +189,40 @@
                 </ng-container>
             </tbody>
         </table>
+    </div>
+</ng-template>
+
+<ng-template #search let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title w-100 h-100">
+            <span class="pull-left">Search</span>
+            <button
+                aria-label="Close"
+                type="button"
+                class="btn btn-danger btn-sm pull-right"
+                (click)="modal.dismiss()"
+                ngbTooltip="Close modal"
+                placement="right"
+                tooltipClass="dig-tooltip"
+                triggers="hover">
+                <span aria-hidden="true" class="fa fa-times"></span>
+            </button>
+        </h5>
+    </div>
+    <div class="modal-body mw-100 text-center modal-max">
+        <div class="input-group">
+            <input
+                type="text"
+                class="form-control"
+                placeholder="Enter a different word"
+                aria-label="Enter a different word to search for."
+                aria-describedby="word-search"
+                [formControl]="searchCtrl"/>
+            <button
+                class="input-group-append btn btn-success"
+                (click)="getUserSuppliedWord(searchCtrl.value); modal.dismiss();">
+                <span class="fa fa-search align-self-center"></span>
+            </button>
+        </div>
     </div>
 </ng-template>

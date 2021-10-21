@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -17,6 +18,8 @@ import { FrameComponent } from './components/frame/frame.component';
   imports: [
     BrowserModule,
     NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot([{
         path: '**',

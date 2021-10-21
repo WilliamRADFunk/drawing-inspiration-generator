@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
 
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
@@ -19,12 +20,19 @@ export class FrameComponent implements OnDestroy, OnInit {
     private readonly subs: Subscription[] = [];
     @ViewChild('content', { static: true }) content: any;
     @ViewChild('history', { static: true }) history: any;
+    @ViewChild('search', { static: true }) search: any;
     public definitionOfDay: string;
     public currPage: number;
     public imageInFocus: PixabayImageHit;
     public images: PixabayImageHit[] = [];
     public imageWord: string;
     public itemsPerPage: number;
+
+    /**
+     * Form control for the input box that searches for the word from user.
+     */
+    public searchCtrl: FormControl = new FormControl('');
+
     public timeIntervalLabel: string = '10 Days';
     public timeIntervals: {label: string, value: number}[] = [
         {
@@ -247,6 +255,29 @@ export class FrameComponent implements OnDestroy, OnInit {
                 // Clicked on backdrop to close
             }
         });
+    }
+
+    public openWordSearchModal(): void {
+        this.modalService.open(this.search, {
+            centered: true,
+            size: 'lg',
+            // windowClass: 'transparent-modal'
+        })
+        .result
+        .then(() => {
+            // Already handled this means of closing the modal.
+        },
+        (reason) => {
+            // Since player clicked outside modal, have to handle the restart.
+            if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+                // Clicked on backdrop to close
+            }
+        });
+    }
+
+    public getUserSuppliedWord(word: string): void {
+        this.wordPicker.changePage(1);
+        this.updateParams({ date: null, random: word });
     }
 
     public pageDown(): void {
