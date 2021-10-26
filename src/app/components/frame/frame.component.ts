@@ -77,10 +77,10 @@ export class FrameComponent implements OnDestroy, OnInit {
             this.route.queryParamMap.subscribe((params: ParamMap) => {
                 let queriedDateAsDate: number;
                 console.log('params', params);
-                if (params.has('selected')) {
-                    const selectedWord: string = params.get('selected');
-                    console.log('selected', selectedWord);
-                    this.wordPicker.getSpecificWord(selectedWord, true);
+                if (params.has('searched')) {
+                    const searchedWord: string = params.get('searched');
+                    console.log('searched', searchedWord);
+                    this.wordPicker.getSpecificWord(searchedWord, true);
                 } else if (params.has('random')) {
                     const queriedWord: string = params.get('random');
                     console.log('random', queriedWord);
@@ -101,7 +101,7 @@ export class FrameComponent implements OnDestroy, OnInit {
                         this.updateParams({ date: new Date().setUTCHours(0, 0, 0, 0) });
                     }
                 } else {
-                    console.log('params - not random, not utcdate, not selected', 'not random');
+                    console.log('params - not random, not utcdate, not searched', 'not random');
                     this.updateParams({ date: new Date().setUTCHours(0, 0, 0, 0) });
                 }
             }),
@@ -132,12 +132,12 @@ export class FrameComponent implements OnDestroy, OnInit {
         );
     }
 
-    private updateParams(params: { date?: number; random?: string; selected?: string; }): void {
-        if (params.selected) {
+    private updateParams(params: { date?: number; random?: string; searched?: string; }): void {
+        if (params.searched) {
             this.router.navigate([], {
                 queryParams: {
                     random: null,
-                    selected: params.selected,
+                    searched: params.searched,
                     utcdate: null
                 },
                 queryParamsHandling: 'merge'
@@ -146,7 +146,7 @@ export class FrameComponent implements OnDestroy, OnInit {
             this.router.navigate([], {
                 queryParams: {
                     random: params.random,
-                    selected: null,
+                    searched: null,
                     utcdate: null
                 },
                 queryParamsHandling: 'merge'
@@ -159,7 +159,7 @@ export class FrameComponent implements OnDestroy, OnInit {
             this.router.navigate([], {
                 queryParams: {
                     random: null,
-                    selected: null,
+                    searched: null,
                     utcdate: `${
                       year}-${
                       month.toString().length === 1 ? `0${month.toString()}` : month}-${
@@ -292,7 +292,7 @@ export class FrameComponent implements OnDestroy, OnInit {
 
     public getUserSuppliedWord(word: string): void {
         this.modalService.dismissAll();
-        this.updateParams({ selected: word });
+        this.updateParams({ searched: word });
     }
 
     public pageDown(): void {
