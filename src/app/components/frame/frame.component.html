@@ -18,6 +18,14 @@
                         </button>
                         <button
                             class="btn btn-sm btn-outline-light ml-1"
+                            (click)="getUserSuppliedWord('butterflies')"
+                            ngbTooltip="BUTTERFLIES!!!"
+                            tooltipClass="dig-tooltip"
+                            triggers="hover">
+                            <span class="fa fa-heart-o"></span>
+                        </button>
+                        <button
+                            class="btn btn-sm btn-outline-light ml-1"
                             (click)="getTomorrowWord()"
                             ngbTooltip="See tomorrow's word"
                             tooltipClass="dig-tooltip"
@@ -33,7 +41,7 @@
                             <span class="fa fa-random"></span>
                         </button>
                         <button
-                            class="btn btn-sm btn-outline-light"
+                            class="btn btn-sm btn-outline-light ml-1"
                             (click)="openWordSearchModal()"
                             ngbTooltip="Search for a specific word"
                             tooltipClass="dig-tooltip"
