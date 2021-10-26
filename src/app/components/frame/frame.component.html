@@ -217,10 +217,13 @@
                 placeholder="Enter a different word"
                 aria-label="Enter a different word to search for."
                 aria-describedby="word-search"
+                ngbAutofocus
+                (keyup.enter)="getUserSuppliedWord(searchCtrl.value);"
                 [formControl]="searchCtrl"/>
             <button
                 class="input-group-append btn btn-success"
-                (click)="getUserSuppliedWord(searchCtrl.value); modal.dismiss();">
+                (keyup.enter)="getUserSuppliedWord(searchCtrl.value);"
+                (click)="getUserSuppliedWord(searchCtrl.value);">
                 <span class="fa fa-search align-self-center"></span>
             </button>
         </div>

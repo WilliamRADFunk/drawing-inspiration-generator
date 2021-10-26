@@ -77,15 +77,19 @@ export class FrameComponent implements OnDestroy, OnInit {
             this.route.queryParamMap.subscribe((params: ParamMap) => {
                 let queriedDateAsDate: number;
                 console.log('params', params);
-                if (params.has('random')) {
-                    console.log('random');
+                if (params.has('selected')) {
+                    const selectedWord: string = params.get('selected');
+                    console.log('selected', selectedWord);
+                    this.wordPicker.getSpecificWord(selectedWord, true);
+                } else if (params.has('random')) {
                     const queriedWord: string = params.get('random');
+                    console.log('random', queriedWord);
                     if (!this.wordPicker.getSpecificWord(queriedWord)) {
                         this.resetWordOfDay();
                     }
                 } else if (params.has('utcdate')) {
-                    console.log('utcdate');
                     const queriedDate: string = params.get('utcdate');
+                    console.log('utcdate', queriedDate);
                     queriedDateAsDate = Date.parse(queriedDate + 'T00:00:00.000Z');
 
                     if (isNaN(queriedDateAsDate) === false) {
@@ -94,11 +98,11 @@ export class FrameComponent implements OnDestroy, OnInit {
                         this.wordPicker.getWord(this.currDate);
                     } else {
                         console.log('utcdate', 'isNaN');
-                        this.updateParams({ date: new Date().setUTCHours(0, 0, 0, 0), random: null });
+                        this.updateParams({ date: new Date().setUTCHours(0, 0, 0, 0) });
                     }
                 } else {
-                    console.log('params - not random, not utcdate', 'not random');
-                    this.updateParams({ date: new Date().setUTCHours(0, 0, 0, 0), random: null });
+                    console.log('params - not random, not utcdate, not selected', 'not random');
+                    this.updateParams({ date: new Date().setUTCHours(0, 0, 0, 0) });
                 }
             }),
             this.wordPicker.currentWord.subscribe(word => {
@@ -128,11 +132,21 @@ export class FrameComponent implements OnDestroy, OnInit {
         );
     }
 
-    private updateParams(params: { date: number; random: string; }): void {
-        if (params.random) {
+    private updateParams(params: { date?: number; random?: string; selected?: string; }): void {
+        if (params.selected) {
+            this.router.navigate([], {
+                queryParams: {
+                    random: null,
+                    selected: params.selected,
+                    utcdate: null
+                },
+                queryParamsHandling: 'merge'
+            });
+        } else if (params.random) {
             this.router.navigate([], {
                 queryParams: {
                     random: params.random,
+                    selected: null,
                     utcdate: null
                 },
                 queryParamsHandling: 'merge'
@@ -145,6 +159,7 @@ export class FrameComponent implements OnDestroy, OnInit {
             this.router.navigate([], {
                 queryParams: {
                     random: null,
+                    selected: null,
                     utcdate: `${
                       year}-${
                       month.toString().length === 1 ? `0${month.toString()}` : month}-${
@@ -199,13 +214,13 @@ export class FrameComponent implements OnDestroy, OnInit {
     public getRandomWord(): void {
         this.wordPicker.changePage(1);
         const word = this.wordPicker.getWord(Math.floor(100000 * Math.random()));
-        this.updateParams({ date: null, random: word });
+        this.updateParams({ random: word });
     }
 
     public getTomorrowWord(): void {
         this.currDate = this.currDate + ONE_DAY;
         this.wordPicker.getWord(this.currDate);
-        this.updateParams({ date: this.currDate, random: null });
+        this.updateParams({ date: this.currDate });
     }
 
     public getWordsArray(sentence: string): string[] {
@@ -276,8 +291,8 @@ export class FrameComponent implements OnDestroy, OnInit {
     }
 
     public getUserSuppliedWord(word: string): void {
-        this.wordPicker.changePage(1);
-        this.updateParams({ date: null, random: word });
+        this.modalService.dismissAll();
+        this.updateParams({ selected: word });
     }
 
     public pageDown(): void {
@@ -298,6 +313,6 @@ export class FrameComponent implements OnDestroy, OnInit {
         const today = new Date().setUTCHours(0, 0, 0, 0);
         this.currDate = today;
         this.wordPicker.getWord(this.currDate);
-        this.updateParams({ date: today, random: null });
+        this.updateParams({ date: today });
     }
 }

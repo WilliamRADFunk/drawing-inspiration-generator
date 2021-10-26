@@ -99,7 +99,7 @@ export class WordPickerService {
             });
     }
 
-    public getSpecificWord(word): boolean {
+    public getSpecificWord(word, isDictionaryIndependent?: boolean): boolean {
         let wordIndex;
         const success = keys.some((key, index) => {
             if (key === word) {
@@ -108,19 +108,16 @@ export class WordPickerService {
             }
         });
 
-        if (!success) {
+        if (!success && !isDictionaryIndependent) {
             return false;
         }
 
+        this.pageNum.next(1);
         this.word.next(word);
         this.imageWord.next(word);
-        this.definition.next(dictionary[word]);
+        this.definition.next(dictionary[word] || 'There is no definition for this word in the dictionary.');
 
-        this.http.get(this.URL + word + this.perPage + this.page + this.pageNum.value + this.minHeight)
-            .pipe(take(1))
-            .subscribe((results: PixabayImageSearchResponse) => {
-                this.images.next(results.hits);
-            });
+        this.changePage(1);
 
         return true;
     }
@@ -134,12 +131,7 @@ export class WordPickerService {
         this.imageWord.next(randomWord);
         this.definition.next(randomDef);
 
-        this.http.get(this.URL + randomWord + this.perPage + this.page + this.pageNum.value + this.minHeight)
-            .pipe(take(1))
-            .subscribe((results: PixabayImageSearchResponse) => {
-                console.log('results', results);
-                this.images.next(results.hits);
-            });
+        this.changePage(1);
 
         return randomWord;
     }
