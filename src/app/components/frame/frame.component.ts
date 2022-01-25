@@ -33,6 +33,11 @@ export class FrameComponent implements OnDestroy, OnInit {
      */
     public searchCtrl: FormControl = new FormControl('');
 
+    /**
+     * Form control for the input box that searches for the word from user.
+     */
+     public pageCtrl: FormControl = new FormControl(1);
+
     public timeIntervalLabel: string = '10 Days';
     public timeIntervals: {label: string, value: number}[] = [
         {
@@ -208,7 +213,7 @@ export class FrameComponent implements OnDestroy, OnInit {
     }
 
     public getNumberOfPages(totalImages: number): number {
-        return Math.ceil(totalImages / 20);
+        return Math.ceil(totalImages / this.itemsPerPage);
     }
 
     public getRandomWord(): void {
@@ -293,6 +298,12 @@ export class FrameComponent implements OnDestroy, OnInit {
     public getUserSuppliedWord(word: string): void {
         this.modalService.dismissAll();
         this.updateParams({ searched: word });
+    }
+
+    public getUserSuppliedPage(page: number): void {
+        if (page > 0 && page <= this.getNumberOfPages(this.totalMatches)) {
+            this.wordPicker.changePage(page);
+        }
     }
 
     public pageDown(): void {

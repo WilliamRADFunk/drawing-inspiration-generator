@@ -95,7 +95,7 @@ export class WordPickerService {
                 this.pageNum.next(pageNum || this.pageNum.value);
                 this.images.next(results.hits);
                 this.imageWord.next(word);
-                this.totalMatches.next(results.total);
+                this.totalMatches.next(results.totalHits);
             });
     }
 
